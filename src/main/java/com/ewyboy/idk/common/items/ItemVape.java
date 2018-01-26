@@ -1,6 +1,7 @@
 package com.ewyboy.idk.common.items;
 
 import com.ewyboy.bibliotheca.common.interfaces.IItemRenderer;
+import com.ewyboy.idk.ModOff;
 import com.ewyboy.idk.common.loaders.CreativeTabLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -47,9 +48,9 @@ public class ItemVape extends ItemFood implements IItemRenderer {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        playerIn.playSound(SoundEvents.BLOCK_FIRE_AMBIENT, 10.0f, worldIn.rand.nextFloat() + 1.0f * 0.9f);
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer playerIn, EnumHand handIn) {
+        playerIn.playSound(SoundEvents.BLOCK_FIRE_AMBIENT, 10.0f, world.rand.nextFloat() + 1.0f * 0.9f);
+        return super.onItemRightClick(world, playerIn, handIn);
     }
 
     @Override
@@ -80,6 +81,7 @@ public class ItemVape extends ItemFood implements IItemRenderer {
 
         if (world.isRemote) {
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, vec3d1.x, vec3d1.y + 0.95, vec3d1.z, vec3d.x, 0, vec3d.z);
+            ModOff.proxy.spawnVapeSmoke(world,  vec3d1.x, vec3d1.y + 0.95, vec3d1.z, 0,0,0, random.nextInt(4) + 1);
         }
 
         return EnumAction.DRINK;

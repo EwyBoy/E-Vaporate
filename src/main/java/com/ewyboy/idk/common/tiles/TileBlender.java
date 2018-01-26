@@ -6,16 +6,42 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by EwyBoy
  */
 public class TileBlender extends TileEntity {
 
-    private ItemStack stack = ItemStack.EMPTY;
+    public ItemStack stack = ItemStack.EMPTY;
+    public FluidTank tank = new FluidTank(Fluid.BUCKET_VOLUME);
 
     public ItemStack getStack() {
         return stack;
+    }
+
+    public FluidTank getTank() {
+        return tank;
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Nullable
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) return (T) tank;
+        return super.getCapability(capability, facing);
     }
 
     public void setStack(ItemStack stack) {
@@ -56,11 +82,8 @@ public class TileBlender extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        if (compound.hasKey("item")) {
-            stack = new ItemStack(compound.getCompoundTag("item"));
-        } else {
-            stack = ItemStack.EMPTY;
-        }
+        tank.readFromNBT(compound);
+        stack = compound.hasKey("item") ? new ItemStack(compound.getCompoundTag("item")) : ItemStack.EMPTY;
     }
 
     @Override
@@ -70,8 +93,8 @@ public class TileBlender extends TileEntity {
             NBTTagCompound tagCompound = new NBTTagCompound();
             stack.writeToNBT(tagCompound);
             compound.setTag("item", tagCompound);
+            tank.writeToNBT(compound);
         }
         return compound;
     }
-
 }
