@@ -1,0 +1,15 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "forge:fluid"
+  },
+  "variants": {
+    "liquid_vape": [
+      {
+        "custom": {
+          "fluid": "liquid_vape"
+        }
+      }
+    ]
+  }
+}

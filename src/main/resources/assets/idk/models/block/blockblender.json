@@ -1,5 +1,6 @@
 {
     "textures": {
+        "particle" : "blocks/iron_block",
         "0": "blocks/iron_block",
         "1": "blocks/wool_colored_red",
         "2": "blocks/wool_colored_blue",

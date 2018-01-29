@@ -17,7 +17,7 @@ public class EventLoader {
     @SideOnly(Side.CLIENT)
       public void textureHook(TextureStitchEvent.Pre event) {
          if (event.getMap().equals(Minecraft.getMinecraft().getTextureMapBlocks())) {
-             event.getMap().registerSprite(new ResourceLocation(Reference.Info.MOD_ID + ":" + "blocks/power_animation"));
+             event.getMap().registerSprite(new ResourceLocation(Reference.Info.MOD_ID + ":" + "blocks/liquid_vape_flow"));
              event.getMap().registerSprite(new ResourceLocation(Reference.Info.MOD_ID + ":" + "particles/smoke"));
          }
     }

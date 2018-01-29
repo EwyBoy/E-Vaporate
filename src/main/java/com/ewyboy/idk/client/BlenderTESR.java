@@ -1,5 +1,6 @@
 package com.ewyboy.idk.client;
 
+import com.ewyboy.idk.common.blocks.BlockBlender;
 import com.ewyboy.idk.common.tiles.TileBlender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,7 +29,7 @@ public class BlenderTESR extends TileEntitySpecialRenderer<TileBlender> {
     }
 
     private void renderFluid(TileBlender te) {
-        if (te != null) {
+        if (te.getTank() != null) {
             final FluidTank fluid = te.tank;
             if (fluid != null &&  fluid.getFluid() != null && fluid.getFluidAmount() > 0) {
                 GlStateManager.pushMatrix();
@@ -51,8 +52,10 @@ public class BlenderTESR extends TileEntitySpecialRenderer<TileBlender> {
             GlStateManager.enableLighting();
             GlStateManager.pushMatrix();
                 GlStateManager.translate(.5, .65, .5);
-                long angle = (System.currentTimeMillis() * 3) % 360;
-                GlStateManager.rotate(angle, 0, 1, 0);
+                if (te.getWorld().getBlockState(te.getPos()).getValue(BlockBlender.ENABLED)) {
+                    long angle = (System.currentTimeMillis() * 3) % 360;
+                    GlStateManager.rotate(angle, 0, 1, 0);
+                }
                 if (stack.getItem() instanceof ItemBlock) {
                     GlStateManager.scale(0.17, 0.17, 0.17);
                 } else {

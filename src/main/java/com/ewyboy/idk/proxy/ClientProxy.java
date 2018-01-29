@@ -1,13 +1,20 @@
 package com.ewyboy.idk.proxy;
 
 import com.ewyboy.idk.common.particles.VapeParticle;
+import com.ewyboy.idk.common.register.Register;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static com.ewyboy.idk.Reference.Info.MOD_ID;
 
 /**
  * Created by EwyBoy
@@ -20,6 +27,7 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     public void preInit(FMLPreInitializationEvent event) {
         super.preInit(event);
+        initFluidModels();
     }
 
     @Override
@@ -32,6 +40,17 @@ public class ClientProxy extends CommonProxy {
     @SideOnly(Side.CLIENT)
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
+    }
+
+    @Override
+    public void initFluidModels() {
+        final ModelResourceLocation fluidLocation = new ModelResourceLocation(MOD_ID + ":" + "fluids", "liquid_vape");
+        ModelLoader.setCustomStateMapper(Register.Blocks.liquid_vape, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return fluidLocation;
+            }
+        });
     }
 
     @Override

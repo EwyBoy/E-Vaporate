@@ -2,7 +2,7 @@
     "textures": {
         "0": "blocks/iron_block",
         "1": "blocks/glass",
-        "2": "cultivatedtech:blocks/liquid_ender_still",
+        "2": "idk:blocks/liquid_vape_still",
         "particle": "blocks/iron_block"
     },
     "display": {

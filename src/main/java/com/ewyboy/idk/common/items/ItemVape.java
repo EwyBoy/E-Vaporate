@@ -2,7 +2,9 @@ package com.ewyboy.idk.common.items;
 
 import com.ewyboy.bibliotheca.common.interfaces.IItemRenderer;
 import com.ewyboy.idk.ModOff;
+import com.ewyboy.idk.common.blocks.BlockBlender;
 import com.ewyboy.idk.common.loaders.CreativeTabLoader;
+import com.ewyboy.idk.common.register.Register;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -15,6 +17,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
@@ -45,6 +48,17 @@ public class ItemVape extends ItemFood implements IItemRenderer {
     @Override
     public int getMaxItemUseDuration(ItemStack stack) {
         return 64;
+    }
+
+
+    @Override
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (worldIn.getBlockState(pos).equals(Register.Blocks.blender)) {
+            if (BlockBlender.getTE(worldIn, pos).getTank().getFluid().getFluid() == Register.Blocks.liquid_vape.getFluid()) {
+                player.getHeldItem(hand).setItemDamage(16);
+            }
+        }
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
     }
 
     @Override

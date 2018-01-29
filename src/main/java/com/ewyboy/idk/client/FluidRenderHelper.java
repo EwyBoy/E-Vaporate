@@ -1,5 +1,7 @@
 package com.ewyboy.idk.client;
 
+import com.ewyboy.idk.common.blocks.BlockBlender;
+import com.ewyboy.idk.common.register.Register;
 import com.ewyboy.idk.common.tiles.TileBlender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -33,10 +35,10 @@ public class FluidRenderHelper {
     }
 
     /**
-     * Renders a fluid at the given position.
+     * Renders a fluids at the given position.
      *
-     * @param fluid The fluid to render.
-     * @param pos   The position in the world to render the fluid.
+     * @param fluid The fluids to render.
+     * @param pos   The position in the world to render the fluids.
      * @param x     The base X position.
      * @param y     The base Y position.
      * @param z     The base Z position.
@@ -48,15 +50,18 @@ public class FluidRenderHelper {
      * @param z2    The max Z position.
      */
     public static void renderFluid(TileBlender te, FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2) {
-        final int color = fluid.getFluid().getColor(fluid);
-        renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, 0xffff6e00);
+        if (te.getWorld().getBlockState(te.getPos()).getValue(BlockBlender.ENABLED) || te.getTank().getFluid().getFluid() == Register.Blocks.liquid_vape.getFluid()) {
+            renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, 0xffff6e00);
+        } else {
+            renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, 0xffffffff);
+        }
     }
 
     /**
-     * Renders a fluid at the given position.
+     * Renders a fluids at the given position.
      *
-     * @param fluid The fluid to render.
-     * @param pos   The position in the world to render the fluid.
+     * @param fluid The fluids to render.
+     * @param pos   The position in the world to render the fluids.
      * @param x     The base X position.
      * @param y     The base Y position.
      * @param z     The base Z position.
@@ -66,7 +71,7 @@ public class FluidRenderHelper {
      * @param x2    The max X position.
      * @param y2    The max Y position.
      * @param z2    The max Z position.
-     * @param color The color offset used by the fluid. Default is white.
+     * @param color The color offset used by the fluids. Default is white.
      */
     public static void renderFluid(TileBlender te, FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
         final Minecraft mc = Minecraft.getMinecraft();
@@ -74,20 +79,21 @@ public class FluidRenderHelper {
         final BufferBuilder buffer = tessellator.getBuffer();
         final int brightness = mc.world.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 
+        mc.getTextureManager();
+
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 242, 242);
 
-
         setupRenderState(x, y, z);
 
         final TextureAtlasSprite flowing = mc.getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
-        final TextureAtlasSprite texture = mc.getTextureMapBlocks().getTextureExtry("idk:blocks/power_animation");
+        final TextureAtlasSprite texture = mc.getTextureMapBlocks().getTextureExtry("idk:blocks/liquid_vape_flow");
 
-        addTexturedQuad(buffer, texture, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
-        addTexturedQuad(buffer, texture, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
-        addTexturedQuad(buffer, texture, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
-        addTexturedQuad(buffer, texture, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
+        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness);
+        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness);
+        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness);
+        addTexturedQuad(buffer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness);
 
         tessellator.draw();
         cleanupRenderState();
