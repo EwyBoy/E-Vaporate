@@ -1,7 +1,7 @@
 package com.ewyboy.idk.common.register;
 
-import com.ewyboy.idk.common.fluids.BaseFluidBlock;
 import com.ewyboy.idk.common.blocks.BlockBlender;
+import com.ewyboy.idk.common.fluids.BaseFluidBlock;
 import com.ewyboy.idk.common.items.ItemVape;
 import com.ewyboy.idk.common.loaders.FluidLoader;
 import com.ewyboy.idk.common.tiles.TileBlender;

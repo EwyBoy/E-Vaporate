@@ -2,28 +2,30 @@ package com.ewyboy.idk.common.items;
 
 import com.ewyboy.bibliotheca.common.interfaces.IItemRenderer;
 import com.ewyboy.idk.ModOff;
-import com.ewyboy.idk.common.blocks.BlockBlender;
 import com.ewyboy.idk.common.loaders.CreativeTabLoader;
-import com.ewyboy.idk.common.register.Register;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -35,9 +37,14 @@ public class ItemVape extends ItemFood implements IItemRenderer {
         super(0, 0.0f, false);
         this.setHasSubtypes(true);
         setMaxStackSize(1);
-        setMaxDamage(16);
-        setDamage(new ItemStack(this), 0);
+        setMaxDamage(64);
+        this.setDamage(new ItemStack(this), 0);
         setCreativeTab(CreativeTabLoader.tabIDK);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        tooltip.add("DMG: " + stack.getItemDamage());
     }
 
     @Override
@@ -50,17 +57,6 @@ public class ItemVape extends ItemFood implements IItemRenderer {
         return 64;
     }
 
-
-    @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.getBlockState(pos).equals(Register.Blocks.blender)) {
-            if (BlockBlender.getTE(worldIn, pos).getTank().getFluid().getFluid() == Register.Blocks.liquid_vape.getFluid()) {
-                player.getHeldItem(hand).setItemDamage(16);
-            }
-        }
-        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
-    }
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer playerIn, EnumHand handIn) {
         playerIn.playSound(SoundEvents.BLOCK_FIRE_AMBIENT, 10.0f, world.rand.nextFloat() + 1.0f * 0.9f);
@@ -70,11 +66,13 @@ public class ItemVape extends ItemFood implements IItemRenderer {
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving) {
         if (entityLiving instanceof EntityPlayer) {
-            EntityPlayer entityplayer = (EntityPlayer) entityLiving;
-            entityplayer.getFoodStats().addStats(this, stack);
-            worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-            this.onFoodEaten(stack, worldIn, entityplayer);
-            stack.setItemDamage(stack.getItemDamage() + 1);
+            if (stack.getItemDamage() > 0) {
+                EntityPlayer entityplayer = (EntityPlayer) entityLiving;
+                entityplayer.getFoodStats().addStats(this, stack);
+                worldIn.playSound(entityplayer, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+                this.onFoodEaten(stack, worldIn, entityplayer);
+                stack.setItemDamage(stack.getItemDamage() - 1);
+            }
         }
         return stack;
     }
@@ -93,15 +91,18 @@ public class ItemVape extends ItemFood implements IItemRenderer {
         vec3d1 = vec3d1.rotateYaw(-player.rotationYaw * 0.017453292F);
         vec3d1 = vec3d1.addVector(player.posX, player.posY + (double)player.getEyeHeight(), player.posZ);
 
-        if (world.isRemote) {
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, vec3d1.x, vec3d1.y + 0.95, vec3d1.z, vec3d.x, 0, vec3d.z);
-            ModOff.proxy.spawnVapeSmoke(world,  vec3d1.x, vec3d1.y + 0.95, vec3d1.z, 0,0,0, random.nextInt(4) + 1);
+        if (stack.getItemDamage() > 0) {
+            if (world.isRemote) {
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, vec3d1.x, vec3d1.y + 0.95, vec3d1.z, vec3d.x, 0, vec3d.z);
+                ModOff.proxy.spawnVapeSmoke(world,  vec3d1.x, vec3d1.y + 0.95, vec3d1.z, 0,0,0, random.nextInt(4) + 1);
+                return EnumAction.DRINK;
+            }
         }
-
-        return EnumAction.DRINK;
+        return EnumAction.NONE;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int[] modelMetas() {
         return new int[0];
     }
@@ -113,12 +114,5 @@ public class ItemVape extends ItemFood implements IItemRenderer {
         ModelResourceLocation model1 = new ModelResourceLocation(getRegistryName() + "_full", "inventory");
         ModelBakery.registerItemVariants(this, model0, model1);
         ModelLoader.setCustomMeshDefinition(this, stack -> stack.getItemDamage() == 0 ? model0 : model1);
-    }
-
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for (int i = 0; i < 2; i++) {
-            items.add(new ItemStack(this, 1, i));
-        }
     }
 }

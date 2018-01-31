@@ -1,7 +1,8 @@
 package com.ewyboy.idk.common.tiles;
 
-import com.ewyboy.bibliotheca.common.utility.Logger;
+import com.ewyboy.bibliotheca.common.helpers.SoundHelper;
 import com.ewyboy.idk.common.blocks.BlockBlender;
+import com.ewyboy.idk.common.loaders.SoundLoader;
 import com.ewyboy.idk.common.register.Register;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemFood;
@@ -12,6 +13,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -44,17 +46,15 @@ public class TileBlender extends TileEntity implements ITickable {
 
     @Override
     public void update() {
-        Logger.info(getTank().getFluid());
         if (world.getBlockState(pos).getValue(BlockBlender.ENABLED)) {
+            SoundHelper.broadcastServerSidedSoundToAllPlayerNearby(world, pos, SoundLoader.blender, SoundCategory.BLOCKS, 10);
             ticks++;
-            Logger.info(ticks);
             if (ticks == 29) {
-                if (getTank() != null && getStack() != null) {
+                if (getTank() != null && getStack() != null && getTank().getFluid() != null) {
                     if (getStack().getItem() instanceof ItemFood) {
-                        ItemFood stack = (ItemFood) getStack().getItem();
                         if (getTank().getFluid().getFluid().equals(FluidRegistry.WATER)) {
-                            getTank().setFluid(new FluidStack(Register.Blocks.liquid_vape.getFluid(), 1000));
-                            Logger.info("All requirements fulfilled");
+                            getTank().setFluid(new FluidStack(Register.Blocks.liquid_vape.getFluid(), (int) (getStack().getCount() * 15.625)));
+                            getStack().setCount(0);
                         }
                     }
                 }
@@ -139,8 +139,8 @@ public class TileBlender extends TileEntity implements ITickable {
             NBTTagCompound tagCompound = new NBTTagCompound();
             stack.writeToNBT(tagCompound);
             compound.setTag("item", tagCompound);
-            tank.writeToNBT(compound);
         }
+        tank.writeToNBT(compound);
         return compound;
     }
 }

@@ -5,6 +5,7 @@ import com.ewyboy.bibliotheca.common.compatibilities.waila.IWailaInformationUser
 import com.ewyboy.bibliotheca.common.interfaces.IBlockRenderer;
 import com.ewyboy.idk.client.BlenderTESR;
 import com.ewyboy.idk.common.loaders.CreativeTabLoader;
+import com.ewyboy.idk.common.register.Register;
 import com.ewyboy.idk.common.tiles.TileBlender;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -16,6 +17,8 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +28,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -71,40 +76,54 @@ public class BlockBlender extends BlockBaseModeledFacing implements ITileEntityP
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockRenderer() {
         super.registerBlockRenderer();
         ClientRegistry.bindTileEntitySpecialRenderer(TileBlender.class, new BlenderTESR());
     }
 
-
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
             TileBlender te = getTE(world, pos);
-            if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, side)) {
-                player.openContainer.detectAndSendChanges();
-                te.changed();
-                te.updateContainingBlockInfo();
-                return true;
+            if (player.getHeldItem(hand).getItem() == Register.Items.vape) {
+                if (player.getHeldItem(hand).getItemDamage() == 0) {
+                    int refill = Math.round(te.getTank().getFluidAmount() * 64) / 1000;
+                    if (refill < 64) refill += 1;
+                    player.getHeldItem(hand).setItemDamage(refill);
+                    te.getTank().setFluid(null);
+                    te.changed();
+                    player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
+                    player.openContainer.detectAndSendChanges();
+                }
             } else {
-                if (te.getStack().isEmpty()) {
-                    if (!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemFood) {
-                        // There is no item in the blender and the player is holding an item. We move that item to the pedestal
-                        te.setStack(player.getHeldItem(hand));
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
-                        // Make sure the client knows about the changes in the player inventory
+                if (player.getHeldItem(hand).getItem() instanceof ItemBucket) {
+                    if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, side)) {
                         player.openContainer.detectAndSendChanges();
+                        te.changed();
+                        te.updateContainingBlockInfo();
+                        return true;
                     }
                 } else {
-                    // There is a stack in the blender. In this case we remove it and try to put it in the players inventory if there is room
-                    ItemStack stack = te.getStack();
-                    te.setStack(ItemStack.EMPTY);
-                    if (!player.inventory.addItemStackToInventory(stack)) {
-                        // Not possible. Throw item in the world
-                        EntityItem entityItem = new EntityItem(world, pos.getX(), pos.getY()+1, pos.getZ(), stack);
-                        world.spawnEntity(entityItem);
+                    if (te.getStack().isEmpty()) {
+                        if (!player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemFood) {
+                            // There is no item in the blender and the player is holding an item. We move that item to the pedestal
+                            te.setStack(player.getHeldItem(hand));
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                            // Make sure the client knows about the changes in the player inventory
+                            player.openContainer.detectAndSendChanges();
+                        }
                     } else {
-                        player.openContainer.detectAndSendChanges();
+                        // There is a stack in the blender. In this case we remove it and try to put it in the players inventory if there is room
+                        ItemStack stack = te.getStack();
+                        te.setStack(ItemStack.EMPTY);
+                        if (!player.inventory.addItemStackToInventory(stack)) {
+                            // Not possible. Throw item in the world
+                            EntityItem entityItem = new EntityItem(world, pos.getX(), pos.getY() + 1, pos.getZ(), stack);
+                            world.spawnEntity(entityItem);
+                        } else {
+                            player.openContainer.detectAndSendChanges();
+                        }
                     }
                 }
             }
@@ -135,10 +154,8 @@ public class BlockBlender extends BlockBaseModeledFacing implements ITileEntityP
             list.add("Add some water to the blender");
         } else {
             list.add("Fluid: " + blender.tank.getFluid().getFluid().getName());
+            list.add("Amount: " + blender.getTank().getFluidAmount() + "mB");
         }
-
-        //list.add("State: " + accessor.getWorld().getBlockState(accessor.getPosition()).getValue(ENABLED));
-
         return list;
     }
 }

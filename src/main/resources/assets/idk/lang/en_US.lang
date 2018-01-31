@@ -1,6 +1,9 @@
 ################################
-###         ITank            ###
+###        E-Vaporate        ###
 ################################
 
-itemGroup.ITank=ITank
-tile.itank.blocktank.name=Liquid Tank
+itemGroup.idk=E-Vaporate
+tile.idk.blockblender.name=Blender
+tile.idk.blockliquid_vape.name=Liquid Vape
+item.idk.itemvape.name=Vape
+fluid.liquid_vape=Vape Fluid
