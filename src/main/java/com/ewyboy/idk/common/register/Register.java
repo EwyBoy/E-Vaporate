@@ -15,11 +15,13 @@ public class Register {
 
     public static final class Blocks {
         public static BlockBlender blender = new BlockBlender();
+        public static BlockBlender blender1 = new BlockBlender();
         public static BlockFluidClassic liquid_vape = new BaseFluidBlock(FluidLoader.LIQUID_VAPE, Material.LAVA);
     }
 
     public static final class Items {
         public static ItemVape vape = new ItemVape();
+        public static ItemVape vape1 = new ItemVape();
     }
 
     public static final class Tiles {

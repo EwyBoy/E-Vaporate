@@ -1,0 +1,29 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "idk:blockblender1"
+  },
+  "variants": {
+    "normal": [{
+      "model": "idk:blockblender1"
+    }],
+    "inventory": [{
+      "model": "idk:blockblender1",
+      "transform": "forge:default-block"
+    }],
+    "facing": {
+      "north": {"y" : 180},
+      "south": {"y": 0},
+      "west": {"y": 90},
+      "east": {"y": 270},
+      "up": {"z": 0},
+      "down": {"z": 0}
+    },
+    "enabled": {
+      "false": {},
+      "true": {
+        "model": "idk:blockblender1"
+      }
+    }
+  }
+}

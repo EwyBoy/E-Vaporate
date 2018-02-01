@@ -39,7 +39,13 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent event) { }
 
+    public boolean shiftPressed() { return false; }
+
+    public boolean ctrlPressed() { return false; }
+
     public void spawnVapeSmoke(World w, double x, double y, double z, double vx, double vy, double vz, float scale) { }
+
+    public void spawnVapeSmokeRGB(World w, double x, double y,double z, double vx, double vy,double vz, float scale, double R, double G, double B) { }
 
     public void initFluidModels() {}
 }

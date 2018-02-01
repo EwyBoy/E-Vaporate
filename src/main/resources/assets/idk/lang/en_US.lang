@@ -4,6 +4,8 @@
 
 itemGroup.idk=E-Vaporate
 tile.idk.blockblender.name=Blender
+tile.idk.blockblender1.name=Limited Edition Steampunk Blender
 tile.idk.blockliquid_vape.name=Liquid Vape
 item.idk.itemvape.name=Vape
+item.idk.itemvape1.name=Limited Edition Steampunk Vape
 fluid.liquid_vape=Vape Fluid

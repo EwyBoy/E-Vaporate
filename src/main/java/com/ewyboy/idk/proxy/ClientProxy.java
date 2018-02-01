@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 
 import static com.ewyboy.idk.Reference.Info.MOD_ID;
 
@@ -54,10 +55,25 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
+    public boolean shiftPressed() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    @Override
+    public boolean ctrlPressed() {
+        return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL);
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void spawnVapeSmoke(World w, double x, double y,double z, double vx, double vy,double vz, float scale) {
-        //ParticleHelper.spawnParticle(new VapeParticle(w, x, y, z, vx, vy, vz));
         Minecraft.getMinecraft().effectRenderer.addEffect(new VapeParticle(w, x, y, z, vx, vy, vz, scale));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void spawnVapeSmokeRGB(World w, double x, double y,double z, double vx, double vy,double vz, float scale, double R, double G, double B) {
+        Minecraft.getMinecraft().effectRenderer.addEffect(new VapeParticle(w, x, y, z, vx, vy, vz, scale, R, G, B));
     }
 
 }

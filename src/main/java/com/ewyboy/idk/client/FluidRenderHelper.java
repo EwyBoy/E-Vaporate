@@ -51,7 +51,7 @@ public class FluidRenderHelper {
      */
     public static void renderFluid(TileBlender te, FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2) {
         if (te.getWorld().getBlockState(te.getPos()).getValue(BlockBlender.ENABLED) || te.getTank().getFluid().getFluid() == Register.Blocks.liquid_vape.getFluid()) {
-            renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, 0xffff6e00);
+            renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, ColorHelper.getColorForVape(te.getStack(), true));
         } else {
             renderFluid(te, fluid, pos, x, y, z, x1, y1, z1, x2, y2, z2, 0xffffffff);
         }

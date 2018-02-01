@@ -1,6 +1,5 @@
 package com.ewyboy.idk.common.tiles;
 
-import com.ewyboy.bibliotheca.common.helpers.SoundHelper;
 import com.ewyboy.idk.common.blocks.BlockBlender;
 import com.ewyboy.idk.common.loaders.SoundLoader;
 import com.ewyboy.idk.common.register.Register;
@@ -47,14 +46,13 @@ public class TileBlender extends TileEntity implements ITickable {
     @Override
     public void update() {
         if (world.getBlockState(pos).getValue(BlockBlender.ENABLED)) {
-            SoundHelper.broadcastServerSidedSoundToAllPlayerNearby(world, pos, SoundLoader.blender, SoundCategory.BLOCKS, 10);
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundLoader.blender, SoundCategory.BLOCKS, 0.5f, 1.0f, true);
             ticks++;
             if (ticks == 29) {
                 if (getTank() != null && getStack() != null && getTank().getFluid() != null) {
                     if (getStack().getItem() instanceof ItemFood) {
                         if (getTank().getFluid().getFluid().equals(FluidRegistry.WATER)) {
                             getTank().setFluid(new FluidStack(Register.Blocks.liquid_vape.getFluid(), (int) (getStack().getCount() * 15.625)));
-                            getStack().setCount(0);
                         }
                     }
                 }
