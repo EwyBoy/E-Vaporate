@@ -1,0 +1,11 @@
+################################
+###        E-Vaporate        ###
+################################
+
+itemGroup.idk=电子烟
+tile.idk.blockblender.name=搅拌机
+tile.idk.blockblender1.name=蒸汽朋克限定版搅拌机
+tile.idk.blockliquid_vape.name=烟油
+item.idk.itemvape.name=电子烟
+item.idk.itemvape1.name=蒸汽朋克限定版电子烟
+fluid.liquid_vape=烟油量
