@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "idk:itemvape",
+    "data": 0
+  },
+  "pattern": [
+    "ngn",
+    " i ",
+    " i "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "n": {
+      "item": "minecraft:iron_nugget"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}

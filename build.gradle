@@ -10,7 +10,7 @@ buildscript {
 
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "4.20"
+version = "4.20.1"
 group = "com.ewyboy.idk"
 archivesBaseName = "E-Vaporate"
 

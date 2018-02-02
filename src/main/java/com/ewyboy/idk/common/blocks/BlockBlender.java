@@ -10,6 +10,7 @@ import com.ewyboy.idk.common.loaders.CreativeTabLoader;
 import com.ewyboy.idk.common.loaders.SoundLoader;
 import com.ewyboy.idk.common.register.Register;
 import com.ewyboy.idk.common.tiles.TileBlender;
+import com.ewyboy.idk.common.utility.LangHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.Block;
@@ -193,24 +194,24 @@ public class BlockBlender extends BlockBaseModeledFacing implements ITileEntityP
 
         if (accessor.getPlayer().isSneaking()) {
             if (blender.getStack().isEmpty()) {
-                list.add("Add your favorite food to the blender");
+                list.add(LangHelper.lang("blender.food"));
             } else  {
-                list.add("Item: " + blender.stack.getItem().getItemStackDisplayName(blender.stack));
-                list.add("Amount: " + blender.getStack().getCount());
+                list.add(LangHelper.lang("blender.item") + ": " + blender.stack.getItem().getItemStackDisplayName(blender.stack));
+                list.add(LangHelper.lang("blender.amount") + ": " + blender.getStack().getCount());
             }
 
             if (blender.getTank().getFluid() == null) {
-                list.add("Add some water to the blender");
+                list.add(LangHelper.lang("blender.water"));
             } else {
                 if (blender.getTank().getFluid().getFluid() == Register.Blocks.liquid_vape.getFluid()) {
-                    list.add("Fluid: " + blender.getStack().getItem().getItemStackDisplayName(blender.stack) + " Vape Juice");
+                    list.add(LangHelper.lang("blender.fluid") + ": " + blender.getStack().getItem().getItemStackDisplayName(blender.stack) + " " + LangHelper.lang("blender.juice"));
                 } else {
-                    list.add("Fluid: " + blender.tank.getFluid().getFluid().getLocalizedName(blender.getTank().getFluid()));
+                    list.add(LangHelper.lang("blender.fluid") + ": " + blender.tank.getFluid().getFluid().getLocalizedName(blender.getTank().getFluid()));
                 }
-                list.add("Amount: " + blender.getTank().getFluidAmount() + "mB");
+                list.add(LangHelper.lang("blender.amount") + ": " + blender.getTank().getFluidAmount() + "mB");
             }
         } else {
-            list.add("Press shift for more info");
+            list.add(LangHelper.lang("key.shift"));
         }
         return list;
     }

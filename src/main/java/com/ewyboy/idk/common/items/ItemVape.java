@@ -1,9 +1,9 @@
 package com.ewyboy.idk.common.items;
 
 import com.ewyboy.bibliotheca.common.interfaces.IItemRenderer;
-import com.ewyboy.bibliotheca.common.utility.Logger;
 import com.ewyboy.idk.ModOff;
 import com.ewyboy.idk.common.loaders.CreativeTabLoader;
+import com.ewyboy.idk.common.utility.LangHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -80,23 +80,23 @@ public class ItemVape extends ItemFood implements IItemRenderer {
 
         if (ModOff.proxy.ctrlPressed()) {
             tooltip.add(text[r.nextInt(10)] + "B" + text[r.nextInt(10)] + "A" + text[r.nextInt(10)] + "M" + text[r.nextInt(10)] + "B" + text[r.nextInt(10)] + "O" + text[r.nextInt(10)] + "O" + text[r.nextInt(10)] + "Z" + text[r.nextInt(10)] + "L" + text[r.nextInt(10)] + "E" + text[r.nextInt(10)] + "D");
-            tooltip.add("§7You have to press shift");
+            tooltip.add("§7" + LangHelper.lang("key.bamboozled"));
         }
 
         if (ModOff.proxy.shiftPressed()) {
-            tooltip.add("Use left: " + stack.getItemDamage());
+            tooltip.add(LangHelper.lang("vape.charges") + ": " + stack.getItemDamage());
             if (nbt != null) {
                 if (nbt.hasKey("heal")) {
-                    tooltip.add("Heal Amount: " + nbt.getInteger("heal"));
+                    tooltip.add(LangHelper.lang("vape.heal") + ": " + nbt.getInteger("heal"));
                 }
                 if (nbt.hasKey("saturation")) {
-                    tooltip.add("Saturation Amount: " + nbt.getFloat("saturation"));
+                    tooltip.add(LangHelper.lang("vape.saturation") + ": " + nbt.getFloat("saturation"));
                 }
             }
         }
 
         if (!ModOff.proxy.ctrlPressed() && !ModOff.proxy.shiftPressed()) {
-            tooltip.add("Press ctrl to display extra info");
+            tooltip.add(LangHelper.lang("key.ctrl"));
         }
     }
 
@@ -133,10 +133,6 @@ public class ItemVape extends ItemFood implements IItemRenderer {
     }
 
     public static Color hex2Rgb(String colorStr) {
-        Logger.info("R: " + Integer.valueOf(colorStr.substring(1, 3), 16));
-        Logger.info("G: " + Integer.valueOf(colorStr.substring(3, 5), 16));
-        Logger.info("B: " + Integer.valueOf(colorStr.substring(5, 7), 16));
-
         return new Color(
                 Integer.valueOf(colorStr.substring(1, 3), 16),
                 Integer.valueOf(colorStr.substring(3, 5), 16),

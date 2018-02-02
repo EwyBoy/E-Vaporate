@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "idk:blockblender"
+  },
+  "pattern": [
+    " x ",
+    "igi",
+    "rir"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "x": {
+      "item": "minecraft:iron_trapdoor"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "g": {
+      "item": "minecraft:glass"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+}
