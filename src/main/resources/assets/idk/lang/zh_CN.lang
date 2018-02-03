@@ -1,0 +1,40 @@
+################################
+###        E-Vaporate        ###
+################################
+
+#  - Creative Tab  - #
+itemGroup.idk=电子烟
+
+# -  Blocks - #
+tile.idk.blockblender.name=搅拌机
+tile.idk.blockblender1.name=蒸汽朋克限定版搅拌机
+
+#  - Items  - #
+item.idk.itemvape.name=电子烟
+item.idk.itemvape1.name=蒸汽朋克限定版电子烟
+
+#  - Fluids  - #
+fluid.liquid_vape=烟油量
+tile.idk.blockliquid_vape.name=烟油量
+
+#  - Descriptions  - #
+idk.blender.food=你需要放入你喜欢的食物
+idk.blender.water=你需要在搅拌机中加入水
+idk.blender.fluid=烟油种类
+idk.blender.item=种类
+idk.blender.amount=数量
+idk.blender.juice=味烟油
+
+idk.vape.juice=食物型电子烟
+idk.vape.charges=存量
+idk.vape.heal=治疗值
+idk.vape.saturation=饥饿值
+
+idk.key.shift=§8按下§5LSHIFT§8了解更多
+idk.key.bamboozled=你必须按下§5LSHIFT
+idk.key.ctrl=按§5LCTRL§8了解更多信息
+
+#############################
+# - Translated to LANG by - #
+#### -  meitangdehulu  - ####
+#############################
