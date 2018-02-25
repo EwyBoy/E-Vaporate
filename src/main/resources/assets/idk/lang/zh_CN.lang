@@ -3,7 +3,7 @@
 ################################
 
 #  - Creative Tab  - #
-itemGroup.idk=电子烟
+itemGroup.idk=E-Vaporate
 
 # -  Blocks - #
 tile.idk.blockblender.name=搅拌机
@@ -14,27 +14,28 @@ item.idk.itemvape.name=电子烟
 item.idk.itemvape1.name=蒸汽朋克限定版电子烟
 
 #  - Fluids  - #
-fluid.liquid_vape=烟油量
-tile.idk.blockliquid_vape.name=烟油量
+fluid.liquid_vape=烟液
+tile.idk.blockliquid_vape.name=烟液
 
 #  - Descriptions  - #
-idk.blender.food=你需要放入你喜欢的食物
-idk.blender.water=你需要在搅拌机中加入水
-idk.blender.fluid=烟油种类
-idk.blender.item=种类
+idk.blender.food=请根据个人喜好向搅拌机添加食物
+idk.blender.water=请向搅拌机中加入适量的水
+idk.blender.fluid=流体
+idk.blender.item=物品
 idk.blender.amount=数量
-idk.blender.juice=味烟油
+idk.blender.juice=烟液
 
-idk.vape.juice=食物型电子烟
-idk.vape.charges=存量
-idk.vape.heal=治疗值
-idk.vape.saturation=饥饿值
+idk.vape.juice=烟液
+idk.vape.charges=剩余使用次数
+idk.vape.heal=饥饿值回复
+idk.vape.saturation=饱和度回复
 
-idk.key.shift=§8按下§5LSHIFT§8了解更多
-idk.key.bamboozled=你必须按下§5LSHIFT
-idk.key.ctrl=按§5LCTRL§8了解更多信息
+idk.key.shift=按Shift键查看详情
+idk.key.bamboozled=你必须按Shift键
+idk.key.ctrl=按Ctrl键查看详情
 
 #############################
 # - Translated to LANG by - #
 #### -  meitangdehulu  - ####
+#### -     Mrkwtkr     - ####
 #############################
